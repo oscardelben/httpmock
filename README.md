@@ -1,6 +1,6 @@
 ### HttpMock
 
-httomock is a mocking library for http requests. It works by overwriting the
+HttpMock is a mocking library for http requests. It works by overwriting the
 http default client so that you can provide your own responder.
 
 Example:
@@ -14,12 +14,12 @@ f := func() { resp, err = http.Get("http://example.com") }
 responder := func(req *http.Request) (*http.Response, error) {
    if req.URL.Host == "example.com" {
      return &http.Response{Status: "200", Body:
-     NewBody("Hello, World!")}, nil
+     httpmock.NewBody("Hello, World!")}, nil
    }
    return &http.Response{}, nil
 }
 
-Activate(f, responder)
+httpmock.Activate(f, responder)
 ```
 
 ### Status
