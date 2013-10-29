@@ -26,3 +26,8 @@ Activate(f, responder)
 
 Work in progress. Not all the api has been defined yet but it's a good starting
 point if you need to test http interactions.
+
+
+### License
+
+MIT
