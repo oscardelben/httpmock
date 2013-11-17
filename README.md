@@ -12,11 +12,11 @@ var err error
 f := func() { resp, err = http.Get("http://example.com") }
 
 responder := func(req *http.Request) (*http.Response, error) {
-   if req.URL.Host == "example.com" {
+   if req.URL.String() == "http://example.com" {
      return &http.Response{Status: "200", Body:
      httpmock.NewBody("Hello, World!")}, nil
    }
-   return &http.Response{}, nil
+   return nil, nil
 }
 
 httpmock.Activate(f, responder)

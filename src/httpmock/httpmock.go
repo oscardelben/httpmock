@@ -27,7 +27,13 @@ func NewBody(body string) Body {
 
 func (t *MockTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	if t.Responder != nil {
-		return t.Responder(req)
+		response, err := t.Responder(req)
+
+		if response == nil {
+			panic("URL not registered: " + req.URL.String())
+		}
+
+		return response, err
 	}
 
 	panic("[httpmock] No responder registered")

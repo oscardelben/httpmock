@@ -14,10 +14,10 @@ func TestGet(t *testing.T) {
 	f := func() { resp, err = http.Get("http://example.com") }
 
 	responder := func(req *http.Request) (*http.Response, error) {
-		if req.URL.Host == "example.com" {
+		if req.URL.String() == "http://example.com" {
 			return &http.Response{Status: "200", Body: NewBody("Hello, World!")}, nil
 		}
-		return &http.Response{}, nil
+		return nil, nil
 	}
 
 	Activate(f, responder)
@@ -49,4 +49,27 @@ func TestNoResponderFound(t *testing.T) {
 	}()
 
 	Activate(f, nil)
+}
+
+func TestResponderReturnsNil(t *testing.T) {
+	var resp *http.Response
+	var err error
+
+	f := func() { resp, err = http.Get("http://example.com?foo=bar") }
+
+	responder := func(req *http.Request) (*http.Response, error) {
+		return nil, nil
+	}
+
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Error("Expected to panic")
+		}
+		if r != "URL not registered: http://example.com?foo=bar" {
+			t.Error("Got", r)
+		}
+	}()
+
+	Activate(f, responder)
 }
