@@ -35,3 +35,18 @@ func TestGet(t *testing.T) {
 		t.Error("Expected 'Hello, World!', got ", string(body))
 	}
 }
+
+func TestNoResponderFound(t *testing.T) {
+	var resp *http.Response
+	var err error
+
+	f := func() { resp, err = http.Get("http://example.com") }
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Error("Expected to panic")
+		}
+	}()
+
+	Activate(f, nil)
+}
