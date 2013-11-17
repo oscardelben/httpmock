@@ -1,0 +1,2 @@
+* Add global http stubbing
+* Investigate supporting custom http clients
